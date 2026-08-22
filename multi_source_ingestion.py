@@ -315,4 +315,23 @@ spark.stop()
 
 print(" PROCESS COMPLETED SUCCESSFULLY")
 
+# ============================================================
+# 17. HDFS READ
+# ============================================================
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
+from pyspark.sql.types import *
+
+spark = SparkSession.builder \
+    .appName("TradeStreaming") \
+    .master("local[*]") \
+    .getOrCreate()
+
+spark.sparkContext.setLogLevel("WARN")
+
+trades_df = spark.read.option("header",True).option("inferSchema",True).csv("hdfs://localhost:9000/input/trades.csv")
+
+trades_df.show()
+
 
